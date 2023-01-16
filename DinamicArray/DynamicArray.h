@@ -4,6 +4,8 @@
 template <class T>
 class ArrayNode
 {
+
+	
 public:
 	ArrayNode<T>* NextNode, *PreviousNode;
 public:
@@ -80,11 +82,20 @@ public:
 		if(FirstNode)
 		{// If firstNode is nullptr its means to the array is uninitialized.
 			FirstAdd(Element);
+			return;
 		}
-		else if(LastNode->IsFull())
-	}
 
-	
+		if(LastNode->IsFull())
+			ScaleUp(Size);
+
+		RegularAdd(Element);
+
+	}
+	void Remove()
+	{// Remove last element from at the end of the array
+		if(Count == 0) // The array is already emty
+			throw std::logic_error("List is already empty");
+	}
 protected:
 	
 private:
