@@ -38,3 +38,12 @@
 *.vcxproj.user
 .vs
 .vscode
+*.tlog
+*.ilk
+*.log
+*.pbd
+*.recipe
+*.txt
+*.pdb
+*.idb
+
