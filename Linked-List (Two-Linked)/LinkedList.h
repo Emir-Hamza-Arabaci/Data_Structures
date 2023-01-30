@@ -7,7 +7,6 @@ using namespace std;
 class Node
 {
 public:
-	int value() { return Value; }
 
 	// CONSTRUCTORS
 	Node() : Value(0), NextNodePtr(nullptr), PreviousNodePtr(nullptr) {} // Invalid Node

@@ -1,3 +1,6 @@
+#ifndef LINKEDLIST_HPP
+#define LINKEDLIST_HPP
+
 #include <iostream>
 
 using namespace std;
@@ -5,6 +8,7 @@ using namespace std;
 class Node
 {
 public:
+
 	int Value;
 
 	// CONSTRUCTORS
@@ -45,21 +49,26 @@ private:
 class LinkedList
 {
 public: // FUCTIONS
-	LinkedList() : FirstNode(nullptr), LastNode(nullptr), Count(0)
-	{
-	}
 
+	
+	LinkedList() : FirstNode(nullptr),LastNode(nullptr),Count(0)
+	{
+	}	
 	~LinkedList()
 	{
 
-		for (Node* Iter = FirstNode; Iter != nullptr;)
+		for (Node* Iter = FirstNode; Iter != LastNode;)
 		{
 			Node* Temp = Iter->NextNode();
 			delete Iter;
 			Iter = Temp;
 		}
 
+		delete LastNode;
+
 	}
+	
+	
 	int count() { return Count; }
 
 	void Add(int Value)
@@ -68,6 +77,18 @@ public: // FUCTIONS
 			AddFirstElement(Value);
 		else
 			AddRegularElement(Value);
+	}
+	int& operator[] (unsigned int Index)
+	{
+		return GetNodeAtIndex(Index)->Value;
+	}
+	void Print()
+	{
+		cout << "[";
+		for (Node* Iter = FirstNode; Iter != LastNode; Iter = Iter->NextNode())
+			cout << Iter->Value << ",";
+		
+		cout << LastNode->Value <<  "]";
 	}
 	void Remove()
 	{
@@ -79,17 +100,10 @@ public: // FUCTIONS
 	void Remove(unsigned int RemoveIndex)
 	{
 		if (Count == 0) throw __cpp_exceptions;
-		if (RemoveIndex >= Count) throw __cpp_exceptions;
 
 		RemoveFromIndex(RemoveIndex);
 	}
-	void Print()
-	{
-		cout << "[";
-		for (Node* Iter = FirstNode; Iter != nullptr; Iter = Iter->NextNode())
-			cout << "," << Iter->Value;
-		cout << "]";
-	}
+
 
 private:
 
@@ -97,26 +111,23 @@ private:
 	Node* LastNode;
 	unsigned int Count;
 
+	
 	void AddFirstElement(int Value)
 	{
-		Node* TempNode = new Node(Value);
-		FirstNode = LastNode = TempNode;
+		FirstNode = LastNode = new Node(Value);
+		LastNode->Plug(FirstNode);
 		Count++;
 	}
 	void AddRegularElement(int Value)
 	{
-		Node* TempNode = new Node(Value);
-		LastNode->Plug(TempNode);
-		LastNode = TempNode;
+		LastNode->Plug(new Node(Value));
+		LastNode = LastNode->NextNode();
+		LastNode->Plug(FirstNode);
+		
 		Count++;
 	}
-	int& operator[] (Unsigned int Index)
-	{
-		if(Index < Count)
-			return GetNodeAtIndex(Index)->Value;
 
-		throw __cpp_exceptions;		
-	}
+	
 	void RegularRemove(unsigned int RemoveIndex)
 	{
 		Node* LeftNode = GetNodeAtIndex(RemoveIndex - 1);
@@ -131,21 +142,20 @@ private:
 	void RemoveFromEnd()
 	{
 		Node* TempNode = GetNodeAtIndex(Count - 2);
-		TempNode->UnPlug();
-
 
 		delete LastNode;
 		LastNode = TempNode;
+
+		LastNode->Plug(FirstNode);
 
 		Count--;
 	}
 	void RemoveFromIndex(unsigned int RemoveIndex)
 	{
-		if (RemoveIndex == Count - 1)
-		{
+
+		if ((Count % RemoveIndex) == Count - 1)
 			RemoveFromEnd();
-			return;
-		}
+		
 		else
 			RegularRemove(RemoveIndex);
 
@@ -153,26 +163,31 @@ private:
 
 	Node* GetNodeAtIndex(unsigned int Index)
 	{
-		if (Index == 0) return FirstNode;
-		if (Index == Count - 1) return LastNode;
-		if (Index < Count)
+		int RealIndex = Index % Count;
+		if (RealIndex == 0) return FirstNode;
+		if (RealIndex == Count - 1) return LastNode;
+
+
+		Node* Iterator = FirstNode;
+		int i = 0;
+
+		while (i < Index)
 		{
-			Node* Iterator = FirstNode;
-			int i = 0;
-
-			while (i < Index)
-			{
-				Iterator = Iterator->NextNode();
-				i++;
-			}
-
-			return Iterator;
+			Iterator = Iterator->NextNode();
+			i++;
 		}
 
-		return nullptr;
+		return Iterator;
+
 
 	}
 
 };
+
+#endif // !LINKEDLIST_HPP
+
+
+
+
 
 
