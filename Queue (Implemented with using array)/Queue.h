@@ -1,10 +1,5 @@
 #ifndef QUEUE_HPP
-#include <iostream>
-
 #define QUEUE_HPP
-
-using std::cout;
-using std::cin;
 
 template <typename T, int a>
 class Queue
@@ -19,15 +14,6 @@ public:
 	~Queue()
 	{
 		delete[] Array;
-	}
-
-		// Helper Functions
-	void Print() noexcept
-	{
-		cout << "[";
-		for (int i = 0; i < a; i++)
-			cout << *(Array + i) << ",";
-		cout << "\b]";
 	}
 
 		// Fundemental Functions

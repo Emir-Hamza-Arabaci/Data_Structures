@@ -30,6 +30,7 @@ public:
 	{
 		if (Count == Max) throw __cpp_exceptions;
 		GetMember(FirstIndex + Count) = Value;
+		Count++;
 	}
 
 	void Pop_Front()
@@ -41,15 +42,19 @@ public:
 
 	T& Front()
 	{
+		if (Count == 0) throw __cpp_exceptions;
+
 		return GetMember(FirstIndex);
 	}
+
+	inline int count() noexcept { return Count; }
 private:
 
 	T* Array;
 	int FirstIndex;
 	int Count;
 
-	T& GetMember(unsigned int Index)
+	T& GetMember(unsigned int Index) noexcept
 	{
 		return Array[CalculateActualIndex(Index)];
 	}
