@@ -38,7 +38,7 @@ public:
 
 		Count++;
 	}
-	inline T Front() noexcept
+	inline T& Front() noexcept
 	{
 		return *Array;
 	}

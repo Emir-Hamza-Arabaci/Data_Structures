@@ -1,6 +1,13 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 
+#include <iostream>
+
+
+using std::count;
+using std::cin;
+
+
 template <typename T, int Max>
 class Queue
 {
@@ -16,11 +23,25 @@ public:
 	{
 		delete[] Array;
 	}
+		
+		// Fundemental Functions // 
 
-		// Helper Functions //
-	void Print()
+	void Push_Front(T Value)
 	{
+		if (Count == Max) throw __cpp_exceptions;
+		GetMember(FirstIndex + Count) = Value;
+	}
 
+	void Pop_Front()
+	{
+		if (Count == 0) throw __cpp_exceptions;
+		FirstIndex++;
+		Count--;	
+	}
+
+	T& Front()
+	{
+		return GetMember(FirstIndex);
 	}
 private:
 
@@ -32,7 +53,6 @@ private:
 	{
 		return Array[CalculateActualIndex(Index)];
 	}
-
 	inline int CalculateActualIndex(unsigned int Index) noexcept
 	{
 		return Index % Max;
