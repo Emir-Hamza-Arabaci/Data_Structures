@@ -13,7 +13,7 @@ class Queue
 public:
 
 		// Constructor and Destructor
-	Queue() : Array(new int[a] {}) , Count(0)
+	Queue() : Array(new T[a] {}) , Count(0)
 	{
 	}
 	~Queue()
@@ -55,7 +55,7 @@ public:
 	inline int count() noexcept { return Count; }
 
 private:
-	int* Array;
+	T* Array;
 	int Count;
 
 	void Shift() noexcept
