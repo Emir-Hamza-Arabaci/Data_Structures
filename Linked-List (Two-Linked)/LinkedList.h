@@ -7,6 +7,7 @@ using namespace std;
 class Node
 {
 public:
+	int Value;
 
 	// CONSTRUCTORS
 	Node() : Value(0), NextNodePtr(nullptr), PreviousNodePtr(nullptr) {} // Invalid Node
@@ -51,7 +52,6 @@ public:
 	}
 
 private:
-	int Value;
 	Node* NextNodePtr;
 	Node* PreviousNodePtr;
 
@@ -109,8 +109,8 @@ public: // FUCTIONS
 	{
 		cout << "[";
 		for (Node* Iter = FirstNode; Iter != nullptr; Iter = Iter->NextNode())
-			cout << "," << Iter->value();
-		cout << "]";
+			cout << Iter->Value << ",";
+		cout << "\b]";
 	}
 
 private:
@@ -135,7 +135,24 @@ private:
 		Count++;
 	}
 
-	
+	int& operator[](unsigned int Index)
+	{
+		if(Node* Temp = GetNodeAtIndex(Index))
+			return Temp->Value;
+
+		throw __cpp_exceptions;
+	}
+	void RemoveFromIndex(unsigned int RemoveIndex)
+	{
+		if (RemoveIndex == Count - 1)
+		{
+			RemoveFromEnd();
+			return;
+		}
+		else
+			RegularRemove(RemoveIndex);
+
+	}
 	void RegularRemove(unsigned int RemoveIndex)
 	{
 		// [PreviousNode]<->[CurrentNode]<->[NextNode]
@@ -159,17 +176,7 @@ private:
 
 		if (!LastNode) FirstNode = nullptr; // if LastNode eqls nullptr FirstNode must be nullptr;
 	}
-	void RemoveFromIndex(unsigned int RemoveIndex)
-	{
-		if (RemoveIndex == Count - 1)
-		{
-			RemoveFromEnd();
-			return;
-		}
-		else
-			RegularRemove(RemoveIndex);
-
-	}
+	
 
 	Node* GetNodeAtIndex(unsigned int Index)
 	{
@@ -189,7 +196,7 @@ private:
 			return Iterator;
 		}
 
-
+		return nullptr;
 	}
 
 };
